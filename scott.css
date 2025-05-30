@@ -1,0 +1,856 @@
+/* Variables y Reset */
+        :root {
+            --scott-orange: #ff6600; /* Color principal de Scott */
+            --scott-red: #cc0000;    /* Color secundario de Scott */
+            --dark-background: #0a0a0a; /* Negro profundo para fondos */
+            --light-text: #f0f0f0;
+            --medium-grey-text: rgba(255, 255, 255, 0.8);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --shadow-light: rgba(255, 102, 0, 0.2);
+            --transition-speed: 0.4s ease-in-out;
+        }
+
+* {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            color: var(--light-text);
+            background-color: var(--dark-background);
+            overflow-x: hidden;
+            opacity: 0; /* Para el efecto de fade-in general */
+            transition: opacity 1s ease-in;
+        }
+
+        body.loaded {
+            opacity: 1;
+        }
+
+        body.loaded .loading-screen {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none; /* Asegura que no interfiera con clics */
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--scott-orange);
+            transition: color var(--transition-speed);
+        }
+
+        a:hover {
+            color: var(--scott-red);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Oswald', sans-serif;
+            color: var(--light-text);
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 5rem;
+            line-height: 1.1;
+            font-weight: 800;
+            letter-spacing: 4px;
+        }
+
+        h2 {
+            font-size: 3.5rem;
+            text-align: center;
+            margin-bottom: 3.5rem;
+            position: relative;
+            padding-bottom: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 90px;
+            height: 5px;
+            background: linear-gradient(90deg, var(--scott-orange), var(--scott-red));
+            border-radius: 3px;
+        }
+
+        h3 {
+            font-size: 2.2rem;
+            color: var(--light-text);
+            font-weight: 600;
+        }
+
+        section {
+            padding: 100px 20px;
+            margin: 0 auto;
+            max-width: 1300px;
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--scott-orange), var(--scott-red));
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .loader {
+            width: 80px;
+            height: 80px;
+            border: 6px solid rgba(255, 255, 255, 0.3);
+            border-top: 6px solid var(--light-text);
+            border-radius: 50%;
+            animation: spin 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite; /* Más dinámico */
+            margin-bottom: 30px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: var(--light-text);
+            font-size: 1.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            animation: pulseText 1.5s infinite alternate;
+        }
+
+        @keyframes pulseText {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.05); opacity: 1; }
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(15px);
+            padding: 1.2rem 2rem;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            transition: background 0.4s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--scott-orange);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 25px rgba(255, 102, 0, 0.6);
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            color: var(--light-text);
+            font-weight: 500;
+            font-size: 1.15rem;
+            position: relative;
+            padding: 0.8rem 1.2rem;
+            border-radius: 30px;
+            transition: all var(--transition-speed);
+        }
+
+        .nav-links a:hover {
+            color: var(--scott-orange);
+            transform: translateY(-3px);
+            background: rgba(255, 102, 0, 0.1);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--scott-orange), var(--scott-red));
+            transition: width var(--transition-speed), transform var(--transition-speed);
+            transform: translateX(-50%) scaleX(0);
+            transform-origin: center;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+            transform: translateX(-50%) scaleX(1);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 7px;
+        }
+
+        .hamburger span {
+            width: 30px;
+            height: 4px;
+            background-color: var(--light-text);
+            border-radius: 2px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: translateY(11px) rotate(45deg);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: translateY(-11px) rotate(-45deg);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(255, 102, 0, 0.8), rgba(204, 0, 0, 0.8)),
+                        url('https://www.scott-sports.com/.imaging/f_jpg/dao/832x468/website/global/news/article-image-12371/2024-range_banner_home.jpg') center/cover;
+            background-attachment: fixed; /* Parallax effect */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            margin-top: 80px; /* Ajusta según la altura del header */
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 70%, rgba(255, 102, 0, 0.2) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 30%, rgba(204, 0, 0, 0.2) 0%, transparent 50%);
+            animation: gradientMove 10s ease-in-out infinite alternate;
+        }
+
+        @keyframes gradientMove {
+            0% { transform: scale(1) rotate(0deg); opacity: 1; }
+            50% { transform: scale(1.05) rotate(3deg); opacity: 0.9; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            padding: 2rem;
+            color: var(--light-text);
+        }
+
+        .hero h1 {
+            font-size: 5.5rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
+            animation: heroTitle 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+            letter-spacing: 5px;
+        }
+
+        @keyframes heroTitle {
+            0% { opacity: 0; transform: translateY(80px) scale(0.9); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .hero p {
+            font-size: 1.8rem;
+            margin-bottom: 3rem;
+            font-weight: 300;
+            animation: heroSubtitle 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s both;
+            opacity: 0;
+        }
+
+        @keyframes heroSubtitle {
+            0% { opacity: 0; transform: translateY(40px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--scott-orange), var(--scott-red));
+            color: var(--light-text);
+            padding: 1.2rem 3.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.3rem;
+            transition: all var(--transition-speed);
+            box-shadow: 0 15px 40px var(--shadow-light);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border: none;
+            animation: heroButton 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1s both;
+            opacity: 0;
+            text-decoration: none;
+        }
+
+        @keyframes heroButton {
+            0% { opacity: 0; transform: translateY(50px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(255, 102, 0, 0.5);
+            background: linear-gradient(45deg, #ff7b1a, #e60000);
+        }
+
+        /* Historia Section */
+        .historia {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border-radius: 25px;
+            margin: 4rem auto;
+            padding: 6rem;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+        }
+
+        .historia-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--scott-orange);
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .video-container:hover {
+            transform: scale(1.02);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .historia-text {
+            color: var(--medium-grey-text);
+        }
+
+        .historia-text h3 {
+            font-size: 2.8rem;
+            margin-bottom: 2rem;
+            color: var(--scott-orange);
+            font-weight: 700;
+            text-shadow: 0 0 15px rgba(255, 102, 0, 0.3);
+        }
+
+        .historia-text ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .historia-text li {
+            margin-bottom: 1.2rem;
+            padding-left: 2.5rem;
+            position: relative;
+            font-size: 1.2rem;
+            line-height: 1.7;
+        }
+
+        .historia-text li::before {
+            content: '»'; /* Flecha más elegante */
+            position: absolute;
+            left: 0;
+            color: var(--scott-orange);
+            font-weight: bold;
+            font-size: 1.5rem;
+            top: 0;
+        }
+
+        .historia-text ul ul {
+            margin-top: 0.8rem;
+            margin-left: 1.5rem;
+        }
+
+        .historia-text ul ul li {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 0.5rem;
+        }
+
+        .historia-text ul ul li::before {
+            content: '•';
+            color: var(--scott-red);
+            font-size: 1.2rem;
+        }
+
+        /* Products Section */
+        .productos {
+            background-color: var(--dark-background);
+        }
+
+        .categoria-title {
+            font-size: 2.8rem;
+            color: var(--scott-orange);
+            margin: 4rem 0 2.5rem 0;
+            text-align: center;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .categoria-title::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--scott-red);
+            border-radius: 2px;
+        }
+
+        .productos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        .bicicleta-card {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border-radius: 25px;
+            overflow: hidden;
+            transition: all var(--transition-speed);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border-color);
+            position: relative;
+            z-index: 1; /* Para la animación de hover */
+        }
+
+        .bicicleta-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to right, transparent, rgba(255, 102, 0, 0.05));
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .bicicleta-card:hover::before {
+            opacity: 1;
+        }
+
+        .bicicleta-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 25px 60px var(--shadow-light);
+            border-color: rgba(255, 102, 0, 0.4);
+        }
+
+        .bicicleta-card img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            display: block;
+        }
+
+        .bicicleta-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .bicicleta-content {
+            padding: 2.5rem;
+        }
+
+        .bicicleta-content h3 {
+            font-size: 2rem;
+            margin-bottom: 1.2rem;
+            color: var(--light-text);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .bicicleta-content p {
+            color: var(--medium-grey-text);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+
+        .precio {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--scott-orange);
+            text-align: right;
+            text-shadow: 0 0 10px rgba(255, 102, 0, 0.2);
+        }
+
+        /* Testimonials */
+        .testimonios {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border-radius: 25px;
+            margin: 4rem auto;
+            padding: 6rem;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+        }
+
+        .testimonios-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+        }
+
+        .testimonio {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 3rem;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 102, 0, 0.2);
+            transition: all var(--transition-speed);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .testimonio:hover {
+            transform: translateY(-8px) scale(1.01);
+            border-color: var(--scott-orange);
+            box-shadow: 0 15px 40px rgba(255, 102, 0, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .testimonio img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 1.5rem;
+            border: 4px solid var(--scott-orange);
+            object-fit: cover;
+            box-shadow: 0 0 20px rgba(255, 102, 0, 0.4);
+        }
+
+        .testimonio-text em {
+            color: var(--light-text);
+            font-size: 1.2rem;
+            line-height: 1.8;
+            display: block;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        .testimonio-text strong {
+            color: var(--scott-orange);
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+        }
+
+        /* CTA Section */
+        .cta-oficial {
+            background: linear-gradient(135deg, var(--scott-orange), var(--scott-red));
+            text-align: center;
+            padding: 5rem 2rem;
+            margin: 4rem auto;
+            border-radius: 25px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--light-text);
+        }
+
+        .cta-oficial h2 {
+            color: var(--light-text);
+            margin-bottom: 2.5rem;
+            font-size: 3rem;
+            font-weight: 800;
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .cta-oficial h2::after {
+            background: var(--light-text);
+        }
+
+        .btn-oficial {
+            display: inline-block;
+            background: var(--light-text);
+            color: var(--scott-orange);
+            padding: 1.4rem 4rem;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 1.4rem;
+            transition: all var(--transition-speed);
+            box-shadow: 0 15px 40px rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border: none;
+            text-decoration: none;
+        }
+
+        .btn-oficial:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 20px 50px rgba(255, 255, 255, 0.5);
+            background: #eee;
+            color: var(--scott-red);
+        }
+
+        /* Footer */
+        footer {
+            background: #000;
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Animaciones al hacer scroll (Revisadas) */
+        .animated-section {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .animated-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .historia-content > div,
+        .productos-grid > div,
+        .testimonios-grid > div,
+        .cta-oficial h2,
+        .cta-oficial .btn-oficial {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .historia-content > div.is-visible,
+        .productos-grid > div.is-visible,
+        .testimonios-grid > div.is-visible,
+        .cta-oficial h2.is-visible,
+        .cta-oficial .btn-oficial.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Añadir delays para efectos escalonados */
+        .productos-grid .bicicleta-card:nth-child(1).is-visible { transition-delay: 0s; }
+        .productos-grid .bicicleta-card:nth-child(2).is-visible { transition-delay: 0.15s; }
+        .productos-grid .bicicleta-card:nth-child(3).is-visible { transition-delay: 0.3s; }
+        .productos-grid .bicicleta-card:nth-child(4).is-visible { transition-delay: 0s; } /* Reiniciar para la siguiente fila visual */
+        .productos-grid .bicicleta-card:nth-child(5).is-visible { transition-delay: 0.15s; }
+        .productos-grid .bicicleta-card:nth-child(6).is-visible { transition-delay: 0.3s; }
+        .productos-grid .bicicleta-card:nth-child(7).is-visible { transition-delay: 0s; }
+        .productos-grid .bicicleta-card:nth-child(8).is-visible { transition-delay: 0.15s; }
+
+        .testimonios-grid .testimonio:nth-child(1).is-visible { transition-delay: 0s; }
+        .testimonios-grid .testimonio:nth-child(2).is-visible { transition-delay: 0.15s; }
+        .testimonios-grid .testimonio:nth-child(3).is-visible { transition-delay: 0.3s; }
+
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            h1 { font-size: 4rem; }
+            h2 { font-size: 2.8rem; }
+            h3 { font-size: 2rem; }
+            section { padding: 80px 20px; }
+
+            .nav-links {
+                gap: 1.5rem;
+            }
+
+            .hero {
+                height: 80vh;
+                margin-top: 70px;
+            }
+
+            .hero h1 { font-size: 4.5rem; }
+            .hero p { font-size: 1.5rem; }
+            .cta-button { padding: 1rem 3rem; font-size: 1.2rem; }
+
+            .historia, .testimonios, .cta-oficial {
+                padding: 4rem;
+                margin: 2rem auto;
+            }
+
+            .historia-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .historia-text h3 { font-size: 2.2rem; }
+            .historia-text li { font-size: 1.1rem; }
+
+            .productos-grid {
+                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+                gap: 2rem;
+            }
+
+            .bicicleta-content h3 { font-size: 1.8rem; }
+            .bicicleta-content p { font-size: 1rem; }
+            .precio { font-size: 1.4rem; }
+
+            .testimonio img { width: 90px; height: 90px; }
+            .testimonio-text em { font-size: 1.1rem; }
+            .testimonio-text strong { font-size: 1rem; }
+
+            .cta-oficial h2 { font-size: 2.5rem; }
+            .btn-oficial { padding: 1.2rem 3rem; font-size: 1.2rem; }
+        }
+
+        @media (max-width: 768px) {
+            header { padding: 1rem 1.5rem; }
+            .logo { font-size: 2.2rem; }
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.95);
+                position: absolute;
+                top: 70px; /* Adjust based on header height */
+                left: 0;
+                text-align: center;
+                padding: 20px 0;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.5s ease-in-out;
+            }
+
+            .nav-links.active {
+                display: flex;
+                max-height: 400px; /* Ajusta según el contenido */
+            }
+
+            .nav-links li {
+                margin: 15px 0;
+            }
+
+            .nav-links a {
+                padding: 10px 0;
+                font-size: 1.05rem;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hero {
+                height: 70vh;
+                margin-top: 60px;
+            }
+            .hero h1 { font-size: 3.5rem; letter-spacing: 2px; }
+            .hero p { font-size: 1.3rem; }
+
+            h2 { font-size: 2.5rem; margin-bottom: 2.5rem; }
+            .categoria-title { font-size: 2.2rem; margin: 3rem 0 2rem; }
+            section { padding: 60px 15px; }
+
+            .historia, .testimonios, .cta-oficial {
+                padding: 3rem 2rem;
+                border-radius: 15px;
+            }
+
+            .historia-text h3 { font-size: 2rem; }
+            .historia-text li { font-size: 1rem; }
+
+            .productos-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .bicicleta-card {
+                margin: 0 auto;
+                max-width: 400px; /* Limita el ancho en móviles */
+            }
+
+            .testimonios-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-oficial h2 { font-size: 2rem; }
+            .btn-oficial { padding: 1rem 2.5rem; font-size: 1.1rem; }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 2.8rem; letter-spacing: 1px; }
+            .hero p { font-size: 1rem; margin-bottom: 2rem; }
+            .cta-button { padding: 0.8rem 2rem; font-size: 1rem; }
+
+            h2 { font-size: 2rem; margin-bottom: 2rem; }
+            .categoria-title { font-size: 1.8rem; margin: 2rem 0 1.5rem; }
+            section { padding: 40px 10px; }
+
+            .historia, .testimonios, .cta-oficial {
+                padding: 2.5rem 1.5rem;
+            }
+
+            .historia-text h3 { font-size: 1.8rem; }
+            .historia-text li { font-size: 0.9rem; padding-left: 2rem; }
+            .historia-text li::before { font-size: 1.3rem; }
+
+            .bicicleta-content h3 { font-size: 1.6rem; }
+            .bicicleta-content p { font-size: 0.95rem; }
+            .precio { font-size: 1.2rem; }
+
+            .testimonio img { width: 70px; height: 70px; }
+            .testimonio-text em { font-size: 1rem; }
+
+            .cta-oficial h2 { font-size: 1.8rem; }
+            .btn-oficial { padding: 0.9rem 2rem; font-size: 1rem; }
+        }
